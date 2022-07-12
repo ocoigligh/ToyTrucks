@@ -1,0 +1,7 @@
+apiVersion: v2
+name: helm-hess-trucks
+description: A Helm chart for Hess toys
+type: application
+
+version: 0.1.0
+appVersion: "1.16.0"

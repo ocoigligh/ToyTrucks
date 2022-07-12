@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderdb-deployment
+spec:
+  replicas:  {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: orderdb-pod
+  template:
+    metadata:
+      labels:
+        app: orderdb-pod
+    spec:
+      containers:
+        - image: mongo
+          name: orderdb-container
+          ports:
+            - containerPort: 27017
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          volumeMounts:
+            - mountPath: /data/orderdb
+              name: orderdata
+      restartPolicy: Always
+      volumes:
+        - name: orderdata
+          persistentVolumeClaim:
+            claimName: orderdata-claim
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: orderdata-claim
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 100Mi
+# status: {}
+

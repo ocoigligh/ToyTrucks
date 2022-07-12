@@ -1,0 +1,89 @@
+@model ToyTrucks.Web.Models.View.TruckDetailViewModel
+@{
+    ViewData["Title"] = "Detail";
+}
+<table border="0" width="100%">
+    <col style="width:60%">
+    <col style="width:40%">
+
+    <tr>
+        <td>
+            <div style="padding: 2px;">
+                <img id="truck_image" src="/img/trucks/@Model.Truck.DefaultPhotoPath" alt="Artist pic" width="100%" />
+            </div>
+        </td>
+
+        <td>
+            <div class="col">
+                <div class="row">
+                    <div class="columnHeader">@Model.Truck.Categories.FirstOrDefault().Name.ToUpper()</div>
+                </div>
+                <div class="row mt-2 bold">
+                    <h1>@Model.Truck.Name</h1>
+                </div>
+                <div class="row mt-3">
+                    @Model.Truck.Year
+                </div>
+                <div class="row mt-4">
+                    @Model.Truck.Description
+                </div>
+                <div class="row mt-5">
+                    <h3><span class="bold">$@Model.Truck.Price</span></h3>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>
+            <div class="truck_list">
+                @for (int i = 0; i < @Model.Truck.Photos.Count; i++)
+                {
+                    <img src="/img/trucks/@Model.Truck.Photos[i].PhotoPath" width="70px"
+                    onclick="changePhoto('@Model.Truck.Photos[i].PhotoPath')" />
+                }
+            </div>
+        </td>
+        <td>
+            <div class="col ">
+                <form class="form" asp-action="AddLine" asp-controller="ShoppingBasket">
+                    <div class="row">
+                        <label class="columnHeader mt-2">QUANTITY:</label>
+                        <select name="Quantity" class="ml-5 w-25">
+                            @for (int i = 1; i <= @Model.Quantity; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+
+                        <input name="TruckId" value="@Model.Truck.TruckId" type="hidden" />
+                        <input name="Price" value="@Model.Truck.Price" type="hidden" />
+                        <input name="Name" value="@Model.Truck.Name" type="hidden" />
+                        @* <input asp-for="@Model.Truck.Year" type="text" /> *@
+                        <input name="Year" value="@Model.Truck.Year" type="hidden" />
+                        <input name="DefaultPhotoPath" value="@Model.Truck.DefaultPhotoPath" type="hidden" />
+                        <button type="submit" class="btn btn-primary ">ADD TO BASKET</button>
+
+                    </div>
+                </form>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="mt-2">
+                <a asp-controller="TruckCatalog" asp-action="Index">
+                    <img class="backIcon" src="~/img/arrow-down.svg" /> Back to truck catalog
+                </a>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+<script type="text/javascript">
+    function changePhoto(name) {
+        document.getElementById("truck_image").src = "/img/trucks/" + name;
+    }
+</script>

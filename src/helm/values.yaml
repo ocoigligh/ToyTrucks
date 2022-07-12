@@ -1,0 +1,21 @@
+# Default values for helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+#Release-wide values
+replicas: 1
+version: "1.0"
+
+# Service Specific Values
+apigateway:
+  image: hesstrucks/apigateway
+basket:
+  image: hesstrucks/basketapi
+catalog:
+  image: hesstrucks/catalogapi
+orders:
+  image: hesstrucks/orderapi
+# basket:
+#   image: brentley/ecsdemo-crystal
+frontend:
+  image: hesstrucks/mvcfrontend

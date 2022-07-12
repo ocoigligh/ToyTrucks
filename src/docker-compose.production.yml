@@ -1,0 +1,157 @@
+# docker build -t temp_catalog_api -f services/catalog/catalog.api/Dockerfile .  THis creates an image from the src dir...
+
+services:
+  catalogdb:
+    image: postgres:alpine
+    restart: "no"
+    environment:
+      POSTGRES_USER: "marcas"
+      POSTGRES_PASSWORD: "password"
+    ports:
+      - 5432:5432
+    volumes:
+      - catalog_postgres_data:/data/catalogdb
+    logging:
+      driver: none
+
+  orderdb:
+    image: mongo
+    restart: "no"
+    ports:
+      - "27017:27017"
+    volumes:
+      - order_mongo_data:/data/orderdb
+    logging:
+      # turns off logging
+      driver: none
+
+  basketdb:
+    image: redis:alpine
+    restart: "no"
+    ports:
+      - "6379:6379"
+    volumes:
+      - basket_redis_data:/data/basketdb
+    logging:
+      driver: none
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management-alpine
+    restart: "no"
+    environment:
+      teds: ""
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmqdata:/var/lib/rabbitmq
+    logging:
+      driver: none
+
+  catalog_api:
+    image: ${IMAGE_HUB}/catalogapi:${TAG:-latest}
+    container_name: catalog_api
+    # build:
+    #   context: Services/Catalog/Catalog.Api
+    #   target: ${TARGET}
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+    ports:
+      - 3500:80
+    volumes:
+      - ./Services/Catalog/Catalog.Api/:/work/
+    depends_on:
+      - catalogdb
+
+  basket_api:
+    image: ${IMAGE_HUB}/basketapi:${TAG:-latest} 
+    container_name: basket_api
+    # build:
+    #   context: Services/Basket/Basket.Api
+    #   target: ${TARGET}
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+    ports:
+      - 3502:80
+    volumes:
+      - ./Services/Basket/Basket.Api/:/basketwork/
+    depends_on:
+      - basketdb #basket_redis_db
+      - rabbitmq
+
+  order_api: 
+    image: ${IMAGE_HUB}/orderapi:${TAG:-latest}
+    container_name: order_api
+    # build:
+    #   context: Services/Orders/Orders.Api
+    #   target: ${TARGET}
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+    ports:
+      - 3508:80
+    volumes:
+      - ./Services/Orders/Orders.Api/:/orderapiwork/
+    depends_on:
+      #- catalogdb 
+      - rabbitmq
+      - orderdb
+
+  mvc_frontend: 
+    image: ${IMAGE_HUB}/mvcfrontend:${TAG:-latest}
+    container_name: mvc_frontend
+    # build:
+    #   context: Frontends/Mvc/Web
+    #   target: ${TARGET}
+    environment:
+      #ASPNETCORE_URLS: "https://+;http://+"
+      ASPNETCORE_URLS: "http://+"
+      #ASPNETCORE_HTTPS_PORT: "8001"
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "80:80"
+      #- "443:443"
+    volumes:
+      - ./Httpsfiles/UserSecrets\:/root/.microsoft/usersecrets
+      - ./Httpsfiles/https:/root/.aspnet/https/
+    depends_on:
+      - catalog_api
+      - order_api
+      - basket_api
+      - ocelot_api
+
+  ocelot_api:
+    image: ${IMAGE_HUB}/apigateway:${TAG:-latest}
+    container_name: ocelot_api
+    # build:
+    #   context: ApiGateways/OcelotApi
+    #   target: ${TARGET}
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+    ports:
+      - 8010:80
+    depends_on:
+      - catalog_api
+      - order_api
+      - basket_api
+
+  identity_service:
+    image: ${IMAGE_HUB}/identityservice:${TAG:-latest}
+    container_name: identity_service
+    # build:
+    #   context: Security/Identity
+    #   target: ${TARGET}
+    environment:
+      ASPNETCORE_ENVIRONMENT: Local
+    ports:
+      - 3520:80
+
+volumes:
+  order_mongo_data:
+    name: order_mongo_data
+  basket_redis_data:
+    name: basket_redis_data
+  catalog_postgres_data:
+    name: catalog_postgres_data
+  rabbitmqdata:
+    name: rabbitmqdata

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogdb-service
+  namespace: toytrucks
+spec:
+  selector:
+    app: catalogdb-pod
+  ports:
+    - name: "postgresbaby"
+      port: 5432
+      targetPort: 5432
+      protocol: TCP

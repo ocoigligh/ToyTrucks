@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>ToyTrucks.Messaging</AssemblyName>
+    <RootNamespace>ToyTrucks.Messaging</RootNamespace>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Title>ToyTrucks.Messaging</Title>
+    <Description>Infrastructure package for ToyTrucks application that contains classes for working with messaging events used by the application.</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+  </PropertyGroup>
+  
+</Project>

@@ -1,0 +1,27 @@
+# docker build -t temp_catalog_api -f services/catalog/catalog.api/Dockerfile .  THis creates an image from the src dir...
+version: '3.4'
+
+services:
+  catalog_api:
+    build:
+      target: debug
+
+  basket_api:
+    build:
+      target: debug
+
+  order_api:
+    build:
+      target: debug
+
+  mvc_frontend:
+    build:
+      target: debug
+
+  ocelot_api:
+    build:
+      target: debug
+
+  identity_service:
+    build:
+      target: debug

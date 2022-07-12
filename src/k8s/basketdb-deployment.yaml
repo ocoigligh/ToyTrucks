@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basketdb-deployment
+  namespace: toytrucks
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: basketdb-pod
+  template:
+    metadata:
+      labels:
+        app: basketdb-pod
+    spec:
+      containers:
+        - image: redis:alpine
+          name: basketdb-container
+          ports:
+            - containerPort: 6379
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          volumeMounts:
+            - mountPath: /data/basketdb
+              name: basketdata
+      restartPolicy: Always
+      volumes:
+        - name: basketdata
+          persistentVolumeClaim:
+            claimName: basketdata-claim

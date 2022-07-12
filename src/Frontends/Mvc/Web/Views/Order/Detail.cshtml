@@ -1,0 +1,68 @@
+@model ToyTrucks.Web.Models.Api.Order
+@{
+    ViewData["Title"] = "Order";
+}
+
+<h2>Your Order</h2>
+
+@if (Model.Message != null)
+{
+    <h4 class="boldRed">@Model.Message</h4>
+}
+
+<h4>Here are the events for your order. Btw, They're not real!.</h4>
+
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md">
+            <h5>Order Date: <span class="bold">@Model.OrderPlaced.ToShortDateString()</span></h5>
+        </div>
+        <div class="col-md">
+            <h5>Order Total Items: <span class="bold">@Model.OrderTotal</span></h5>
+        </div>
+        <div class="col-md">
+            <h5>Order Amount: <span class="bold">$@Model.TotalPrice</span></h5>
+        </div>
+        <div class="col-md">
+            <h5>Order Paid: <span><input type="checkbox" disabled="true" value="$Model.OrderPaid" /></span></h5>
+        </div>
+
+    </div>
+</div>
+<br />
+<table class="table">
+    <thead>
+        <tr class="columnHeader">
+            <th></th>
+            <th>TRUCK NAME</th>
+
+            @if (Model.Message != null)
+            {
+                <th>Message</th>
+
+            }
+            <th>QUANTITY</th>
+            <th>PRICE</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var line in Model.OrderLines)
+        {
+            <tr>
+                <td><img class="listImage" src="/img/trucks/@line.PhotoPath" /></td>
+                <td>@line.TruckName</td>
+
+                @if (Model.Message != null)
+                {
+                    <td class="boldRed">@line.Message</td>
+
+                }
+                <td>@line.Quantity</td>
+                <td>@line.Price</td>
+
+            </tr>
+        }
+
+    </tbody>
+</table>

@@ -1,0 +1,57 @@
+# docker build -t temp_catalog_api -f services/catalog/catalog.api/Dockerfile .  THis creates an image from the src dir...
+version: '3.4'
+
+services:
+  catalogdb:
+    image: postgres:alpine
+    restart: "no"
+    environment:
+      POSTGRES_USER: "marcas"
+      POSTGRES_PASSWORD: "password"
+    ports:
+      - 5432:5432
+    volumes:
+      - catalog_postgres_data:/data/catalogdb
+    logging:
+      driver: none
+
+  orderdb:
+    image: mongo
+    restart: "no"
+    ports:
+      - "27017:27017"
+    volumes:
+      - order_mongo_data:/data/orderdb
+    logging:
+      # turns off logging
+      driver: none
+
+  basketdb:
+    image: redis:alpine
+    restart: "no"
+    ports:
+      - "6379:6379"
+    volumes:
+      - basket_redis_data:/data/basketdb
+    logging:
+      driver: none
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management-alpine
+    restart: "no"
+    environment:
+      teds: ""
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    logging:
+      driver: none
+
+volumes:
+  order_mongo_data:
+    name: order_mongo_data
+  basket_redis_data:
+    name: basket_redis_data
+  catalog_postgres_data:
+    name: catalog_postgres_data

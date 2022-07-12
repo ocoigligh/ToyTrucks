@@ -1,0 +1,43 @@
+@model OrderListViewModel
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h2>Your orders</h2>
+<h4>Here is an overview of your orders.</h4>
+
+<table class="table">
+    <thead>
+        <tr class="columnHeader">
+            <th>ORDER DATE</th>
+            @if (Model.HasMessage)
+            {
+                <th>MESSAGE</th>
+            }
+            <th>ORDER ITEMS TOTAL</th>
+            <th>ORDER TOTAL</th>
+            <th>PAID</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.OrderPlaced.ToShortDateString()</td>
+                @if (Model.HasMessage)
+                {
+                    <td class="boldRed">@order.Message</td>
+                }
+                <td class="bold">@order.OrderTotal</td>
+                <td class="bold">$ @order.TotalPrice</td>
+                <td class="=bold">
+                    <input type="checkbox" disabled="true" value="@order.OrderPaid" />
+                </td>
+                <td>
+                    <a class="btn-primary" type="button" asp-action="Detail" asp-route-orderId="@order.OrderId">DETAILS</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

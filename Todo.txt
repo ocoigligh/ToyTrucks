@@ -1,0 +1,20 @@
+ 
+when inventory updated, need to publish inventory updated event to be consumed by catalogapi
+need to update teh truck inventory quantity with new quantity and also set outofstock to true if true
+DONE
+THen need to update basket.
+Add OutOfStock to basket. If quantity is now 0 then set OutOfStock to true. Total is for all baskets whose OutOfStock = false
+DONE
+
+
+Add exception handling
+Add logging to app
+DONE take photo for 2009/2013
+
+DONE add solution to aws
+Set up payment service
+
+MINI trucks?? Need to create a page for them
+
+Add Kubernetes
+

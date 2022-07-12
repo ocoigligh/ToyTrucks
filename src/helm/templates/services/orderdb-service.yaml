@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderdb-service
+spec:
+  selector:
+    app: orderdb-pod
+  ports:
+    - name: "mongobaby"
+      port: 27017
+      targetPort: 27017

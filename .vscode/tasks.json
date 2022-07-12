@@ -1,0 +1,110 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "${workspaceFolder}/BuildWorkspace.bat",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/d",
+                            "/c"
+                        ]
+                    }
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "${workspaceFolder}/CleanWorkspace.bat",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/d",
+                            "/c"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "label": "restore",
+            "type": "shell",
+            "command": "${workspaceFolder}/restoreWorkspace.bat",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/d",
+                            "/c"
+                        ]
+                    }
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "linux build",
+            "type": "shell",
+            "command": "${workspaceFolder}/linuxscripts/BuildWorkspace.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "linux clean",
+            "type": "shell",
+            "command": "${workspaceFolder}/linuxscripts/CleanWorkspace.sh"
+        },
+        {
+            "label": "linux restore",
+            "type": "shell",
+            "command": "${workspaceFolder}/linuxscripts/restoreWorkspace.sh"
+        },
+        {
+            "type": "docker-build",
+            "label": "docker-build: release",
+            "dependsOn": [
+                "build"
+            ],
+            "dockerBuild": {
+                "tag": "productappmicroservices:latest",
+                "dockerfile": "${workspaceFolder}/src/ApiGateways/Shopping.Aggregator/Dockerfile",
+                "context": "${workspaceFolder}",
+                "pull": true
+            },
+            "netCore": {
+                "appProject": "${workspaceFolder}/src/ApiGateways/Shopping.Aggregator/Shopping.Aggregator.csproj"
+            }
+        },
+        {
+            "type": "docker-run",
+            "label": "docker-run: debug",
+            "dependsOn": [
+                "docker-build: debug"
+            ],
+            "dockerRun": {},
+            "netCore": {
+                "appProject": "${workspaceFolder}/src/ApiGateways/Shopping.Aggregator/Shopping.Aggregator.csproj",
+                "enableDebugging": true
+            }
+        },
+        {
+            "type": "docker-run",
+            "label": "docker-run: release",
+            "dependsOn": [
+                "docker-build: release"
+            ],
+            "dockerRun": {},
+            "netCore": {
+                "appProject": "${workspaceFolder}/src/ApiGateways/Shopping.Aggregator/Shopping.Aggregator.csproj"
+            }
+        }
+    ]
+}

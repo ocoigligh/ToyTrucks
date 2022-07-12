@@ -1,0 +1,136 @@
+@model ToyTrucks.Web.Models.View.BasketViewModel
+@{
+    ViewData["Title"] = "Basket";
+}
+<h2>Your shopping cart</h2>
+
+<h4>Here are the trucks currently in your shopping cart.</h4>
+
+<table class="table">
+    <thead>
+        <tr class="columnHeader">
+            <th></th>
+            <th>TRUCK NAME</th>
+            <th>PRICE</th>
+            <th>QUANTITY</th>
+            <th>TOTAL</th>
+            <th>DELETE</th>
+            <th>MESSAGE</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var line in Model.BasketLines)
+        {
+            <tr>
+                <td><img src="img/trucks/@line.DefaultPhotoPath" width=155px height=100px /></td>
+                <td>@line.Name</td>
+                <td class="bold">@line.Price</td>
+                @if (!line.OutOfStock)
+                {
+                    <td>
+                        <form asp-action="UpdateLine">
+                            <input type="hidden" name="LineId" value="@line.LineId" />
+                            <input type="hidden" id="initialValue_@line.LineId" value="@line.Quantity" />
+                            <select name="Quantity" id="cboQuantitySelector_@line.LineId" class="w-25" asp-for="@line.Quantity">
+                                @for (int i = 1; i <= @line.TruckQuantity; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                            <button id=btnUpdateQuantity_@line.LineId type="submit" class="filterButton">Update</button>
+                        </form>
+                    </td>
+                    <td class="bold big">$@(line.Price * line.Quantity) </td>
+                    <td>
+                        <a asp-action="RemoveLine" asp-route-lineId="@line.LineId">
+                            <img class="cancelIcon" src="~/img/times.svg" />
+                        </a>
+                    </td>
+                    @if (line.StockDecreased)
+                    {
+                        <td class="bold big">Stock decreased </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                }
+                else
+                {
+                    <td class="bold big">0</td>
+                    <td class="bold big">0 </td>
+                    <td>
+                        <a asp-action="RemoveLine" asp-route-lineId="@line.LineId">
+                            <img class="cancelIcon" src="~/img/times.svg" />
+                        </a>
+                    </td>
+                    <td class="bold big">Out of Stock </td>
+                }
+            </tr>
+        }
+
+    </tbody>
+    <tfoot>
+        @* <tr>
+            <td colspan="5" class="text-right bold big">Discount:</td>
+            <td class="text-right bold big">
+            $@Model.Discount
+            </td>
+            </tr> *@
+        <tr>
+            <td colspan="5" class="text-right bold big">Total:</td>
+            <td class="text-right bold big">
+                $@((Model.ShoppingCartTotal - Model.Discount))
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+<div class="row">
+    <div class="col-9">
+        @* <h4>Enter your discount code here!</h4>
+
+            <form asp-action="ApplyDiscountCode" method="post" class="form-inline" role="form">
+
+            <label class="sr-only">Code</label>
+            <input type="text" class="form-control mb-2 mr-sm-2" name="Code" placeholder="ABC-123">
+            <input type="submit" class="filterButton" value="Apply" />
+
+            </form>*@
+    </div>
+    <div class="col-3">
+        <div class="text-center">
+            <a class="btn btn-primary" asp-controller="ShoppingBasket" asp-action="Checkout">Check out now!</a>
+        </div>
+    </div>
+</div>
+<div class="mt-2">
+    <a asp-controller="TruckCatalog" asp-action="Index">
+        <img class="backIcon" src="~/img/arrow-down.svg" /> Back to truck catalog
+    </a>
+</div>
+
+<script type="text/javascript">
+
+    var inputs = document.querySelectorAll('[id^="cboQuantitySelector_"]')
+    let buttons = document.querySelectorAll('[id^="btnUpdateQuantity_"]')
+
+    inputs.forEach(input => {
+        input.addEventListener('change', (e) => {
+            var id = e.target.id.slice(e.target.id.indexOf('_') + 1)
+            console.log(id);
+            var button = document.getElementById("btnUpdateQuantity_" + id)
+            var valueToCheckAgainst = document.getElementById("initialValue_" + id)
+            if (button === null || valueToCheckAgainst === null) {
+                console.log("Cant find button nor cbo for " + id)
+                return
+            }
+    @* console.log("cbo value: " + e.target.value)
+        console.log("valueToCheckAgainst value: " + valueToCheckAgainst.value) *@
+                button.disabled = !(e.target.value !== valueToCheckAgainst.value)
+
+        })
+    });
+
+    buttons.forEach(button => button.disabled = true)
+</script>

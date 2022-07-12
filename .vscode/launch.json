@@ -1,0 +1,215 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Mvc Client No docker",
+            "type": "coreclr",
+            "request": "launch",
+            "requireExactSource": false,
+            "program": "${workspaceFolder}/src/Frontends/Mvc/Web/bin/Debug/net5.0/Web.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Frontends/Mvc/Web",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\\\bNow listening and debugging on:\\\\s+(https?://\\\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "CatalogApi  No docker",
+            "type": "coreclr",
+            "request": "launch",
+            "requireExactSource": false,
+            "program": "${workspaceFolder}/src/Services/Catalog/Catalog.Api/bin/Debug/net5.0/Catalog.Api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Services/Catalog/Catalog.Api",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\\\bNow listening on:\\\\s+(https?://\\\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "BasketApi No docker",
+            "type": "coreclr",
+            "request": "launch",
+            "requireExactSource": false,
+            "program": "${workspaceFolder}/src/Services/Basket/Basket.Api/bin/Debug/net5.0/Basket.Api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Services/Basket/Basket.Api",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\\\bNow listening on:\\\\s+(https?://\\\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "OrdersApi No docker",
+            "type": "coreclr",
+            "request": "launch",
+            "requireExactSource": false,
+            "program": "${workspaceFolder}/src/Services/Orders/Orders.Api/bin/Debug/net5.0/Orders.Api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Services/Orders/Orders.Api",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\\\bNow listening on:\\\\s+(https?://\\\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "ApiGateway No docker",
+            "type": "coreclr",
+            "request": "launch",
+            "requireExactSource": false,
+            "program": "${workspaceFolder}/src/ApiGateways/OcelotApi/bin/Debug/net5.0/OcelotApi.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/ApiGateways/OcelotApi",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\\\bNow listening on:\\\\s+(https?://\\\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "IdentityServer No docker",
+            "type": "coreclr",
+            "request": "launch",
+            "requireExactSource": false,
+            "program": "${workspaceFolder}/src/Security/Identity/bin/Debug/netcoreapp3.1/Identity.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Security/Identity",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\\\bNow listening on:\\\\s+(https?://\\\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "CatalogApi Docker Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickRemoteProcess}",
+            "pipeTransport": {
+                "pipeProgram": "docker",
+                "pipeArgs": [
+                    "exec",
+                    "-i",
+                    "catalog_api"
+                ],
+                "debuggerPath": "/root/vsdbg/vsdbg",
+                "pipeCwd": "${workspaceRoot}",
+                "quoteArgs": false
+            },
+            "sourceFileMap": {
+                "/work": "${workspaceRoot}/src/Services/Catalog/Catalog.Api/"
+            }
+        },
+        {
+            "name": "BasketApi Docker Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickRemoteProcess}",
+            "pipeTransport": {
+                "pipeProgram": "docker",
+                "pipeArgs": [
+                    "exec",
+                    "-i",
+                    "basket_api"
+                ],
+                "debuggerPath": "/root/vsdbg/vsdbg",
+                "pipeCwd": "${workspaceRoot}",
+                "quoteArgs": false
+            },
+            "sourceFileMap": {
+                "/basketwork": "${workspaceRoot}/src/Services/Basket/Basket.Api/"
+            }
+        },
+        {
+            "name": "OrderApi Docker Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickRemoteProcess}",
+            "pipeTransport": {
+                "pipeProgram": "docker",
+                "pipeArgs": [
+                    "exec",
+                    "-i",
+                    "order_api"
+                ],
+                "debuggerPath": "/root/vsdbg/vsdbg",
+                "pipeCwd": "${workspaceRoot}",
+                "quoteArgs": false
+            },
+            "sourceFileMap": {
+                "/orderapiwork": "${workspaceRoot}/src/Services/Orders/Orders.Api/"
+            }
+        },
+        //  
+        {
+            "name": "Mvc Client Docker Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickRemoteProcess}",
+            "pipeTransport": {
+                "pipeProgram": "docker",
+                "pipeArgs": [
+                    "exec",
+                    "-i",
+                    "mvc_frontend"
+                ],
+                "debuggerPath": "/root/vsdbg/vsdbg",
+                "pipeCwd": "${workspaceRoot}",
+                "quoteArgs": false
+            },
+            "sourceFileMap": {
+                "/mvcwork": "${workspaceRoot}/src/Frontends/Mvc/Web/"
+            }
+        },
+        {
+            "name": "Docker .NET Core Launch",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run: debug",
+            "netCore": {
+                "appProject": "${workspaceFolder}/src/ApiGateways/Shopping.Aggregator/Shopping.Aggregator.csproj"
+            }
+        }
+    ]
+}

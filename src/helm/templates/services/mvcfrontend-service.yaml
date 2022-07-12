@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mvcfrontend-service
+spec:
+  selector:
+    app: mvcfrontend-pod
+  ports:
+    - name: "bingo"
+      port: 3426
+      targetPort: 80
+      protocol: TCP
+  type: LoadBalancer

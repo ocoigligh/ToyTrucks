@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogapi-deployment
+  namespace: toytrucks
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalogapi-pod
+  template:
+    metadata:
+      labels:
+        app: catalogapi-pod
+    spec:
+      containers:
+        - env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Kubernetes
+          image: ocoigligh/catalogapi:1.1
+          name: catalogapi-container
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "500Mi"
+              cpu: "500m"
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+            exec:
+              command:
+                - cat
+                - healthfile
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+      restartPolicy: Always

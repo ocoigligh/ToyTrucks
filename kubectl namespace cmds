@@ -1,0 +1,15 @@
+ 
+
+swwitch namespace
+kubectl config set-context --current --namespace=my-namespace
+
+get item in specific namespace
+kubectl get <ITEM> -n <NAMEPSACE>
+
+Set namespace
+kubectl config set-context --current --namespace=<insert-namespace-name-here>
+# Validate it
+kubectl config view --minify | grep namespace:
+
+deletes everything from current namespace
+kubectl delete all --all 

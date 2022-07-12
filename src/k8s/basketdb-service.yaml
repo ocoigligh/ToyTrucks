@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: basketdb-service
+  namespace: toytrucks
+spec:
+  selector:
+    app: basketdb-pod
+  ports:
+    - name: "redisbaby"
+      port: 6379
+      targetPort: 6379
+      protocol: TCP

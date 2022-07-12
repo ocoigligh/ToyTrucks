@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: basketapi-service
+  namespace: toytrucks
+spec:
+  selector:
+    app: basketapi-pod
+  ports:
+    - name: "bingo2"
+      port: 14002
+      targetPort: 80
+      protocol: TCP
+
+  # nodePort: The port on the node where external traffic will come in on. For External traffic
+# port: The port of this service
+# targetPort: The target port on the pod(s) to forward traffic to. This defaults to port if not set
+
+#Traffic comes in on nodePort, forwards to port on the service which then routes to targetPort on the pod(s).
+

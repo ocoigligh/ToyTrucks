@@ -1,0 +1,18 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq-cluster
+  namespace: toytrucks
+spec:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 500m
+      memory: 256Mi
+    limits:
+      cpu: 600m
+      memory: 512Mi
+#kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
+
+#kubectl get all -n rabbitmq-system
+#kubectl get secret rabbitmq-cluster-default-user -o jsonpath='{.data.username}' | base64 --decode
